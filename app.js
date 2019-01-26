@@ -19,7 +19,7 @@ app.get('/rooms/:id',function(req,res) {
 
 // 404 catchall
 app.get('*', function(req,res) { 
-	res.send({ hello: 'home' })}
+	res.send({ hello: '404' })}
 );
 
 // launch server
