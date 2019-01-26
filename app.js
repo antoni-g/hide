@@ -6,6 +6,7 @@ var http = require('http').Server(app);
 
 // serve static content in public 
 app.use(express.static('public'));
+app.use("/scripts", express.static(__dirname + '/views/scripts'));
 
 // this is how routes are handled
 app.get('/',function(req,res) {
