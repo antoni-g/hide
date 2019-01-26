@@ -1,0 +1,20 @@
+{
+  "name": "hide",
+  "version": "0.0.1",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vasanth16/hide.git"
+  },
+  "author": "Antoni Gierczak, Julius Park, Felix Cui, Vasanth Rajasekaran",
+  "dependencies": {
+    "express": "^4.16.3",
+    "jquery": "^3.3.1",
+    "request": "^2.86.0"
+  },
+  "devDependencies": {}
+}
