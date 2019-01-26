@@ -1,19 +1,28 @@
-const client = stitch.Stitch.initializeDefaultAppClient("hide-yntsk");
-client.auth.loginWithCredential(new stitch.AnonymousCredential());
-  // Get a MongoDB Service Client
-  const mongodb = client.getServiceClient(
-    stitch.RemoteMongoClient.factory,
-    "mongodb-atlas"
-  );
-const db = mongodb.db("game");
+const client = stitch.Stitch.initializeDefaultAppClient('hide-yntsk');
+
+  const db = client.getServiceClient(stitch.RemoteMongoClient.factory, 'mongodb-atlas').db('game');
+
+  client.auth.loginWithCredential(new stitch.AnonymousCredential()).then(user =>
+    db.collection('default').updateOne({owner_id: client.auth.user.id}, {$set:{number:42}}, {upsert:true})
+  ).then(() =>
+    db.collection('default').find({owner_id: client.auth.user.id}, { limit: 100}).asArray()
+  ).then(docs => {
+      console.log("Found docs", docs)
+      console.log("[MongoDB Stitch] Connected to Stitch")
+      console.log(db.collection("default").find({}).asArray());
+
+  }).catch(err => {
+    console.error(err)
+  });
 
 
 $( document ).ready(function() {
    var mainCanvas = document.querySelector("#myCanvas");
 var mainContext = mainCanvas.getContext("2d");
-
 var canvasWidth = mainCanvas.width;
 var canvasHeight = mainCanvas.width;
+mainCanvas.width = backingScale(mainContext)*canvasWidth;
+mainCanvas.height = backingScale(mainContext)*canvasHeight;
 var requestAnimationFrame = window.requestAnimationFrame ||
   window.mozRequestAnimationFrame ||
   window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
@@ -79,6 +88,20 @@ drawCircle();
 function updateSeekerLocation(seekerDistance){
   seekerDistance = 10;
 }
+function backingScale(context) {
+
+    if ('devicePixelRatio' in window) {
+
+        if (window.devicePixelRatio > 1) {
+
+            return window.devicePixelRatio;
+
+        }
+
+    }
+
+    return 1;
+}
 function drawSeekerLocation(ctx, seekerDistance, seekerAngle){
   ctx.shadowBlur = 20;
   ctx.shadowColor = "gray";
@@ -89,3 +112,7 @@ function drawSeekerLocation(ctx, seekerDistance, seekerAngle){
   ctx.fill();
   ctx.shadowBlur = 0;
 }
+
+setInterval(function() {
+  
+}, 1000);
