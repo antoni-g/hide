@@ -9,9 +9,18 @@ app.use(express.static('public'));
 app.use("/scripts", express.static(__dirname + '/views/scripts'));
 
 // this is how routes are handled
-app.get('/',function(req,res) {
+app.get('/', function(req,res) { 
+	res.send({ hello: 'home' })}
+);
+
+app.get('/rooms/:id',function(req,res) {
   res.sendFile(path.join(__dirname+'/views/index.html'));
 });
+
+// 404 catchall
+app.get('*', function(req,res) { 
+	res.send({ hello: 'home' })}
+);
 
 // launch server
 console.log('running on localhost:8080');
