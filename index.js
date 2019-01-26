@@ -1,3 +1,13 @@
+const client = stitch.Stitch.initializeDefaultAppClient("hide-yntsk");
+client.auth.loginWithCredential(new stitch.AnonymousCredential());
+  // Get a MongoDB Service Client
+  const mongodb = client.getServiceClient(
+    stitch.RemoteMongoClient.factory,
+    "mongodb-atlas"
+  );
+const db = mongodb.db("game");
+
+
 $( document ).ready(function() {
    var mainCanvas = document.querySelector("#myCanvas");
 var mainContext = mainCanvas.getContext("2d");
