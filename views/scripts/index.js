@@ -1,46 +1,58 @@
-var mainCanvas = document.querySelector("#myCanvas");
+$( document ).ready(function() {
+   var mainCanvas = document.querySelector("#myCanvas");
 var mainContext = mainCanvas.getContext("2d");
 
 var canvasWidth = mainCanvas.width;
-var canvasHeight = mainCanvas.height;
+var canvasHeight = mainCanvas.width;
 var requestAnimationFrame = window.requestAnimationFrame ||
   window.mozRequestAnimationFrame ||
   window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
-mainContext.translate(225, 225);
+
+
+var seekerDistance = 30;
+var seekerAngle = 70;
+mainContext.translate(canvasWidth/2, canvasHeight/2);
 
 second = 0;
 
 function drawCircle() {
-  mainContext.clearRect(-225, -225, canvasWidth, canvasHeight);
+  mainContext.clearRect(-canvasWidth/2, -canvasHeight/2, canvasWidth, canvasHeight);
 
   // color in the background
   mainContext.fillStyle = "#EEEEEE";
-  mainContext.fillRect(-225, -225, canvasWidth, canvasHeight);
+  mainContext.fillRect(-canvasWidth/2, -canvasHeight/2, canvasWidth, canvasHeight);
 
   // draw the circle
   mainContext.beginPath();
 
-  var radius = 175;
+  var radius = canvasWidth/2-30;
   mainContext.arc(0, 0, radius, 0, Math.PI * 2, false);
   mainContext.closePath();
-
+mainContext.fillStyle = "#FFFFFF";
+  mainContext.fill();
+  mainContext.beginPath();
+  mainContext.arc(0, 0, 10, 0, Math.PI * 2, false);
+  mainContext.closePath();
   // color in the circle
-  mainContext.fillStyle = "#FFFFFF";
+  mainContext.fillStyle = "black";
   mainContext.fill();
 
   second++;
-  if (second > 59) {
+  if (second > 360) {
     second = 0;
   }
-  console.log(second);
-  drawHand(mainContext, second/30*Math.PI, 175, 5);
+  if(second == seekerAngle){
+    console.log(second, seekerAngle)
+    updateSeekerLocation(seekerDistance);
+  }
+  drawSeekerLocation(mainContext, seekerAngle, seekerDistance);
+  drawHand(mainContext, second/180*Math.PI, radius, 5);
   requestAnimationFrame(drawCircle);
 }
 function drawHand(ctx, pos, length, width) {
-		
     ctx.beginPath();
     ctx.shadowBlur = 20;
-		ctx.shadowColor = "black";
+    ctx.shadowColor = "black";
     ctx.lineWidth = width;
     ctx.lineCap = "round";
     ctx.moveTo(0,0);
@@ -53,3 +65,17 @@ function drawHand(ctx, pos, length, width) {
 }
 drawCircle();
 
+});
+function updateSeekerLocation(seekerDistance){
+  seekerDistance = 10;
+}
+function drawSeekerLocation(ctx, seekerDistance, seekerAngle){
+  ctx.shadowBlur = 20;
+  ctx.shadowColor = "gray";
+  ctx.beginPath();
+  ctx.arc(seekerDistance*Math.cos(seekerAngle/180*Math.PI), seekerDistance*Math.sin(seekerAngle/180*Math.PI), 7, 0, Math.PI * 2, false);
+  ctx.closePath();
+  ctx.fillStyle = "#737373";
+  ctx.fill();
+  ctx.shadowBlur = 0;
+}
