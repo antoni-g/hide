@@ -14,7 +14,8 @@
   "dependencies": {
     "express": "^4.16.3",
     "jquery": "^3.3.1",
-    "request": "^2.86.0"
+    "request": "^2.86.0",
+    "nodemon": "1.18.9 "
   },
   "devDependencies": {}
 }
