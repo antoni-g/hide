@@ -8,7 +8,8 @@ const client = stitch.Stitch.initializeDefaultAppClient('hide-yntsk');
 window.setInterval(function(){
 var distance;
 db.collection('default').find({}, { limit: 100}).asArray().then(docs => {
-	$('#distance').html(getMin(docs).toFixed(2));
+	$('#distance').html(getMin(docs).toFixed(2) + "m");
+  $('#players').html("Number of hiders: " + docs.length)
 })
 
 }, 500);
@@ -39,16 +40,22 @@ var options = {
 var crd;
 function success(pos) {
   crd = pos.coords;
-  db.collection('default').updateMany({owner_id: client.auth.user.id}, {
-    $set:{
-      location:{
-        type: "Point", coordinates: [
-          crd.longitude, crd.latitude]
-        },
-        updateTime: new Date().getTime(),
-        hider: false
-      }
-    }, {upsert:true})
+  if (crd) {
+    db.collection('default').updateMany({owner_id: client.auth.user.id}, {
+      $set:{
+        location:{
+          type: "Point", coordinates: [
+            crd.longitude, crd.latitude]
+          },
+          updateTime: new Date().getTime(),
+          hider: false
+        }
+      }, {upsert:true})
+
+  }
+  else {
+    console.log('local location error')
+  }
 }
 function error(err) {
   console.warn('ERROR(' + err.code + '): ' + err.message);

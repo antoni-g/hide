@@ -1,6 +1,6 @@
 
-var seekerDistance = 30;
-var seekerAngle = 70;
+var seekerDistance = 0;
+var seekerAngle = 0;
 var seekerOpacity = 1;
 var drawing = false;
 var multiplier = .3;

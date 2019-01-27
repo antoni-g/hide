@@ -8,7 +8,21 @@ input[type=button] {
      font-size: 1em;
  }
 
+#distance{
+  margin: 12px;
+  width: 30vw;
+  height: 20vh;
+  border-radius:1vw;
+  padding-top: 1em;
+  background-color: #a2c9ef;
+  font-family: 'Ubuntu';
+  font-size: 5em;
+  text-align: center;
+}
+
 .center-div {
+  display: inline;
+  text-align: center;
   position: absolute;
   margin: auto;
   top: 0;
