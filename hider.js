@@ -52,7 +52,7 @@ mainContext.fillStyle = "#EEEEEE";
   if (second > 360) {
     second = 0;
   }
-  drawSeekerLocation(mainContext);
+  drawSeekerLocation(mainContext,1);
   drawHand(mainContext, second/180*Math.PI, radius, 5);
   requestAnimationFrame(drawCircle);
 }
@@ -124,13 +124,13 @@ function backingScale(context) {
 
     return 1;
 }
-function drawSeekerLocation(ctx){
+function drawSeekerLocation(ctx,opacity){
   ctx.shadowBlur = 20;
   ctx.shadowColor = "gray";
   ctx.beginPath();
   ctx.arc(seekerDistance*Math.cos(seekerAngle/180*Math.PI), seekerDistance*Math.sin(seekerAngle/180*Math.PI), 7, 0, Math.PI * 2, false);
   ctx.closePath();
-  ctx.fillStyle = "#737373";
+  ctx.fillStyle = 'rgba(115, 115, 115, '+opacity+')';
   ctx.fill();
   ctx.shadowBlur = 0;
 }
