@@ -13,18 +13,17 @@ input[type=button] {
   right: 0;
   bottom: 0;
   left: 0;
-  width: 400px;
-  height: 500px;
+  width: 60%;
+  max-width:500px;
+  height: 80%;
   background-color: #ccc;
   border-radius: 3px;
 }
 
 .inside {
 	display: inline;
-	text-align: center
+	text-align: center;
 	top: 100px;
-    left: 130px;
-    width: 300px;
     min-height: 500px;
     height: auto;
     position: relative;
