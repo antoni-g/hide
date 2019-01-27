@@ -3,7 +3,7 @@ var seekerDistance = 30;
 var seekerAngle = 70;
 var seekerOpacity = 1;
 var drawing = false;
-var multiplier = .3;
+var multiplier = 1;
 var hiders = [];
 
 const client = stitch.Stitch.initializeDefaultAppClient('hide-yntsk');
@@ -27,7 +27,7 @@ var requestAnimationFrame = window.requestAnimationFrame ||
 
 
 mainContext.translate(canvasWidth/2, canvasHeight/2);
-
+mainContext.rotate(-Math.PI/2)
 second = 0;
 
 function drawCircle() {
@@ -182,6 +182,7 @@ function drawSeekerLocation(ctx,opacity){
   ctx.shadowBlur = 20;
   ctx.shadowColor = "black";
   ctx.beginPath();
+  seekerDistance = 8.765+22.15*Math.log(seekerDistance);
   ctx.arc(seekerDistance*Math.cos(seekerAngle/180*Math.PI), seekerDistance*Math.sin(seekerAngle/180*Math.PI), 8, 0, Math.PI * 2, false);
   ctx.closePath();
   ctx.fillStyle = 'rgba(115, 115, 115, '+opacity+')';
@@ -192,6 +193,7 @@ function drawHiderLocation(ctx,opacity,dist,angle){
   ctx.shadowBlur = 20;
   ctx.shadowColor = "gray";
   ctx.beginPath();
+  dist = 8.765+22.15*Math.log(dist);
   ctx.arc(dist*Math.cos(angle/180*Math.PI), dist*Math.sin(angle/180*Math.PI), 5, 0, Math.PI * 2, false);
   ctx.closePath();
   ctx.fillStyle = 'rgba(162, 201, 239, '+opacity+')';
