@@ -1,9 +1,9 @@
 
 body {
-    font-family: 'Ubuntu';font-size: 22px;
+    font-family: 'Ubuntu';font-size: 2em;
 }
 input[type=button] {
-     font-family: 'Ubuntu';font-size: 22px;
+     font-family: 'Ubuntu';font-size: 2em;
  }
 
 .center-div {
