@@ -1,3 +1,7 @@
+
+var seekerDistance = 30;
+var seekerAngle = 70;
+
 const client = stitch.Stitch.initializeDefaultAppClient('hide-yntsk');
 
   const db = client.getServiceClient(stitch.RemoteMongoClient.factory, 'mongodb-atlas').db('game');
@@ -16,11 +20,12 @@ const client = stitch.Stitch.initializeDefaultAppClient('hide-yntsk');
   });
 
 
+
 $( document ).ready(function() {
    var mainCanvas = document.querySelector("#myCanvas");
 var mainContext = mainCanvas.getContext("2d");
 var canvasWidth = mainCanvas.width;
-var canvasHeight = mainCanvas.width;
+var canvasHeight = mainCanvas.height;
 mainCanvas.width = backingScale(mainContext)*canvasWidth;
 mainCanvas.height = backingScale(mainContext)*canvasHeight;
 var requestAnimationFrame = window.requestAnimationFrame ||
@@ -28,8 +33,6 @@ var requestAnimationFrame = window.requestAnimationFrame ||
   window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 
 
-var seekerDistance = 30;
-var seekerAngle = 70;
 mainContext.translate(canvasWidth/2, canvasHeight/2);
 
 second = 0;
@@ -60,11 +63,7 @@ mainContext.fillStyle = "#FFFFFF";
   if (second > 360) {
     second = 0;
   }
-  if(second == seekerAngle){
-    console.log(second, seekerAngle)
-    updateSeekerLocation(seekerDistance);
-  }
-  drawSeekerLocation(mainContext, seekerAngle, seekerDistance);
+  drawSeekerLocation(mainContext);
   drawHand(mainContext, second/180*Math.PI, radius, 5);
   requestAnimationFrame(drawCircle);
 }
@@ -85,9 +84,43 @@ function drawHand(ctx, pos, length, width) {
 drawCircle();
 
 });
-function updateSeekerLocation(seekerDistance){
-  seekerDistance = 10;
+function updateSeekerLocation(){
+  var distance;
+  db.collection('default').find({}, { limit: 10}).asArray().then(docs => {
+      docs.forEach(function(i){
+        if(i["hider"] == false){
+          seekerDistance = calcDistance(crd.longitude, crd.latitude, i["location"]["coordinates"][0], i["location"]["coordinates"][1])
+          seekerAngle = angle(0, 0, i["location"]["coordinates"][0], i["location"]["coordinates"][1]);
+        }})
+
+    })
+
 }
+
+function angle(cx, cy, ex, ey) {
+  var dy = ey - cy;
+  var dx = ex - cx;
+  var theta = Math.atan2(dy, dx); // range (-PI, PI]
+  theta *= 180 / Math.PI; // rads to degs, range (-180, 180]
+  //if (theta < 0) theta = 360 + theta; // range [0, 360)
+  return theta;
+}
+window.setInterval(function(){
+updateSeekerLocation();
+}, 10000);
+
+function calcDistance(lat1, lon1, lat2, lon2){  // generally used geo measurement function
+    var R = 6378.137; // Radius of earth in KM
+    var dLat = lat2 * Math.PI / 180 - lat1 * Math.PI / 180;
+    var dLon = lon2 * Math.PI / 180 - lon1 * Math.PI / 180;
+    var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLon/2) * Math.sin(dLon/2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    var d = R * c;
+    return d * 1000; // meters
+}
+
 function backingScale(context) {
 
     if ('devicePixelRatio' in window) {
@@ -102,7 +135,13 @@ function backingScale(context) {
 
     return 1;
 }
-function drawSeekerLocation(ctx, seekerDistance, seekerAngle){
+function drawSeekerLocation(ctx){
+<<<<<<< HEAD
+
+=======
+  console.log("drawing new seeker at")
+  console.log(seekerDistance, seekerAngle)
+>>>>>>> 7de3a46cbc7d44bb160ceb71c92f82761e7ae9af
   ctx.shadowBlur = 20;
   ctx.shadowColor = "gray";
   ctx.beginPath();
@@ -122,18 +161,20 @@ var options = {
   timeout: 100000,
   maximumAge: 0
 };
-
+var crd;
 function success(pos) {
-  var crd = pos.coords;
+  crd = pos.coords;
   db.collection('default').updateOne({owner_id: client.auth.user.id}, {
     $set:{
       location:{
         type: "Point", coordinates: [
           crd.longitude, crd.latitude]
-        }
+        },
+        updateTime: new Date().getTime(),
+        hider: true
+
       }
     }, {upsert:true})
-  console.log(crd);
 }
 function error(err) {
   console.warn('ERROR(' + err.code + '): ' + err.message);
