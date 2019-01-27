@@ -70,7 +70,7 @@ mainContext.fillStyle = "#EEEEEE";
   }
   if (seekerOpacity < .02) {
     drawing = false;
-  }  
+  }
   drawHand(mainContext, second/180*Math.PI, radius, 5);
 
   drawLine(mainContext);
