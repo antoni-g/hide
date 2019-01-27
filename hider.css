@@ -1,8 +1,14 @@
- html, body {overflow:hidden;} 
- #myCanvas{
+html, body {overflow:hidden;}
+#myCanvas{
  	height: 667px;
  	width: 375px;
- }
+}
+
+.align-canvas {
+  text-align: center;
+  border: 3px solid green !important;
+}
+
  body.noScroll { /* ...or body.dialogShowing */
   overflow: hidden;
 }

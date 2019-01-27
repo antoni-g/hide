@@ -70,7 +70,7 @@ function drawHand(ctx, pos, length, width) {
     ctx.stroke();
     ctx.rotate(-pos);
     ctx.shadowBlur = 0;
-    
+
 }
 drawCircle();
 
@@ -166,4 +166,3 @@ function error(err) {
   console.warn('ERROR(' + err.code + '): ' + err.message);
 }
 var id = navigator.geolocation.watchPosition(success, error, options);
- 
