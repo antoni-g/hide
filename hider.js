@@ -2,6 +2,7 @@
 var seekerDistance = 30;
 var seekerAngle = 70;
 var seekerOpacity = 1;
+var drawing = false;
 
 const client = stitch.Stitch.initializeDefaultAppClient('hide-yntsk');
 
@@ -53,9 +54,29 @@ mainContext.fillStyle = "#EEEEEE";
   if (second > 360) {
     second = 0;
   }
-  drawSeekerLocation(mainContext,seekerOpacity);
-  seekerOpacity*=.98;
+
+  var handAngle = second
+  var tempSeekerAngle = Math.round(seekerAngle)+90
+  if (tempSeekerAngle > 360) {
+    tempSeekerAngle -= 360;
+  }
+  console.log(handAngle)
+  console.log(tempSeekerAngle)
+  if (second === tempSeekerAngle) {
+    drawing = true;
+    seekerOpacity = 1;
+  }
+  if (drawing) {
+    console.log('drawing hand')
+    drawSeekerLocation(mainContext,seekerOpacity);
+    seekerOpacity*=.99;
+  }
+  if (seekerOpacity < .02) {
+    drawing = false;
+  }  
   drawHand(mainContext, second/180*Math.PI, radius, 5);
+
+
   requestAnimationFrame(drawCircle);
 }
 function drawHand(ctx, pos, length, width) {
