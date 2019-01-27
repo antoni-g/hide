@@ -3,7 +3,7 @@ var seekerDistance = 30;
 var seekerAngle = 70;
 var seekerOpacity = 1;
 var drawing = false;
-var multiplier = .1;
+var multiplier = .3;
 var hiders = [];
 
 const client = stitch.Stitch.initializeDefaultAppClient('hide-yntsk');
@@ -79,7 +79,7 @@ function drawCircle() {
         el.opacity = 1;
         el.drawing = true;
       }
-      if (el.opacity > .02 && el.dist > 0) {
+      if (el.opacity > .02 && el.dist > .5) {
         console.log(el)
         drawHiderLocation(mainContext,el.opacity,el.dist,el.angle);
         el.opacity *= .98;
@@ -131,11 +131,11 @@ function updateSeekerLocation(){
           console.log(i)
           if(i["hider"] === false){
             seekerDistance = multiplier*calcDistance(crd.longitude, crd.latitude, i["location"]["coordinates"][0], i["location"]["coordinates"][1])
-            seekerAngle = angle(0, 0, i["location"]["coordinates"][0], i["location"]["coordinates"][1]);
+            seekerAngle = angle(crd.longitude, crd.latitude, i["location"]["coordinates"][0], i["location"]["coordinates"][1]);
           }
           else {
             var hiderDistance = multiplier*calcDistance(crd.longitude, crd.latitude, i["location"]["coordinates"][0], i["location"]["coordinates"][1])
-            var hiderAngle = angle(0, 0, i["location"]["coordinates"][0], i["location"]["coordinates"][1]);
+            var hiderAngle = angle(crd.longitude, crd.latitude, i["location"]["coordinates"][0], i["location"]["coordinates"][1]);
             var car = {dist: hiderDistance, angle: hiderAngle, opacity: 0, drawing: false};
             hiders.push(car)
           }
