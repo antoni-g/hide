@@ -1,9 +1,11 @@
 
 body {
-    font-family: 'Ubuntu';font-size: 4.5em;
+    font-family: 'Ubuntu';
+    font-size: 2em;
 }
 input[type=button] {
-     font-family: 'Ubuntu';font-size: 4.5em;
+     font-family: 'Ubuntu';
+     font-size: 2em;
  }
 
 .center-div {
@@ -61,8 +63,9 @@ input[type=button] {
 }
 
 .hvr-fade {
-	font-family: 'Ubuntu';font-size: 22px;
-	height: 8vh;
+	font-family: 'Ubuntu';
+	font-size: 1.5em;
+	height: 10vh;
   text-align: center;
   width: 18vw;
   border-radius:10px;
