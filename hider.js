@@ -3,6 +3,8 @@ var seekerDistance = 30;
 var seekerAngle = 70;
 var seekerOpacity = 1;
 var drawing = false;
+var multiplier = .3;
+var hiders = [];
 
 const client = stitch.Stitch.initializeDefaultAppClient('hide-yntsk');
 
@@ -41,7 +43,7 @@ function drawCircle() {
   var radius = canvasWidth/2-30;
   mainContext.arc(0, 0, radius, 0, Math.PI * 2, false);
   mainContext.closePath();
-mainContext.fillStyle = "#EEEEEE";
+  mainContext.fillStyle = "#EEEEEE";
   mainContext.fill();
   mainContext.beginPath();
   mainContext.arc(0, 0, 10, 0, Math.PI * 2, false);
@@ -60,27 +62,45 @@ mainContext.fillStyle = "#EEEEEE";
   if (tempSeekerAngle > 360) {
     tempSeekerAngle -= 360;
   }
-  console.log(handAngle)
-  console.log(tempSeekerAngle)
   if (second === tempSeekerAngle) {
     drawing = true;
     seekerOpacity = 1;
   }
   if (drawing) {
-    console.log('drawing hand')
     drawSeekerLocation(mainContext,seekerOpacity);
     seekerOpacity*=.99;
   }
   if (seekerOpacity < .02) {
     drawing = false;
   }  
+  hiders.forEach(function(el) {
+    if (Math.round(el.angle)+90 === second || el.drawing) {
+      if (!el.drawing) {
+        el.opacity = 1;
+        el.drawing = true;
+      }
+      if (el.opacity > .01 && el.dist > .5) {
+        drawHiderLocation(mainContext,el.opacity,el.dist,el.angle);
+        el.opacity *= .98;
+      }
+      else {
+        el.drawing = false;
+        var ind = hiders.indexOf(el);
+        hiders.splice(ind, 1);
+      }
+    }
+  });
   drawHand(mainContext, second/180*Math.PI, radius, 5);
 
+  drawLine(mainContext);
+
+  
 
   requestAnimationFrame(drawCircle);
 }
 function drawHand(ctx, pos, length, width) {
     ctx.beginPath();
+    ctx.strokeStyle = 'rgba(0,0,0,1)';
     ctx.shadowBlur = 20;
     ctx.shadowColor = "black";
     ctx.lineWidth = width;
@@ -99,15 +119,25 @@ drawCircle();
 function updateSeekerLocation(){
   var distance;
   db.collection('default').find({}, { limit: 10}).asArray().then(docs => {
+      if (!crd) {
+        console.log('local location error')
+        return;
+      }
       docs.forEach(function(i){
-        if(i["hider"] == false){
-          seekerDistance = calcDistance(crd.longitude, crd.latitude, i["location"]["coordinates"][0], i["location"]["coordinates"][1])
-          seekerAngle = angle(0, 0, i["location"]["coordinates"][0], i["location"]["coordinates"][1]);
-          seekerOpacity = 1;
-        }})
-
+        if (i) {
+          if(i["hider"] === false){
+            seekerDistance = multiplier*calcDistance(crd.longitude, crd.latitude, i["location"]["coordinates"][0], i["location"]["coordinates"][1])
+            seekerAngle = angle(crd.longitude, crd.latitude, i["location"]["coordinates"][0], i["location"]["coordinates"][1]);
+          }
+          else {
+            var hiderDistance = multiplier*calcDistance(crd.longitude, crd.latitude, i["location"]["coordinates"][0], i["location"]["coordinates"][1])
+            var hiderAngle = angle(crd.longitude, crd.latitude, i["location"]["coordinates"][0], i["location"]["coordinates"][1]);
+            var car = {dist: hiderDistance, angle: hiderAngle, opacity: 0, drawing: false};
+            hiders.push(car)
+          }
+        }
     })
-
+  })
 }
 
 function angle(cx, cy, ex, ey) {
@@ -150,14 +180,74 @@ function backingScale(context) {
 }
 function drawSeekerLocation(ctx,opacity){
   ctx.shadowBlur = 20;
-  ctx.shadowColor = "gray";
+  ctx.shadowColor = "black";
   ctx.beginPath();
-  ctx.arc(seekerDistance*Math.cos(seekerAngle/180*Math.PI), seekerDistance*Math.sin(seekerAngle/180*Math.PI), 7, 0, Math.PI * 2, false);
+  ctx.arc(seekerDistance*Math.cos(seekerAngle/180*Math.PI), seekerDistance*Math.sin(seekerAngle/180*Math.PI), 8, 0, Math.PI * 2, false);
   ctx.closePath();
   ctx.fillStyle = 'rgba(115, 115, 115, '+opacity+')';
   ctx.fill();
   ctx.shadowBlur = 0;
 }
+function drawHiderLocation(ctx,opacity,dist,angle){
+  ctx.shadowBlur = 20;
+  ctx.shadowColor = "gray";
+  ctx.beginPath();
+  ctx.arc(dist*Math.cos(angle/180*Math.PI), dist*Math.sin(angle/180*Math.PI), 5, 0, Math.PI * 2, false);
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(162, 201, 239, '+opacity+')';
+  ctx.fill();
+  ctx.shadowBlur = 0;
+}
+
+
+function drawLine(ctx) {
+  ctx.strokeStyle = 'rgba(0,0,0,0.2)';
+  ctx.beginPath();
+
+  //down
+  ctx.moveTo(0,0);
+  ctx.lineTo(0, 170);
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  //right
+  ctx.beginPath();
+  ctx.moveTo(0,0);
+  ctx.lineTo(170, 0);
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // up
+  ctx.beginPath();
+  ctx.moveTo(0,0);
+  ctx.lineTo(0, -170);
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // left
+  ctx.beginPath();
+  ctx.moveTo(0,0);
+  ctx.lineTo(-170, 0);
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  ctx.strokeStyle = 'rgba(0,0,0,0.2)';
+  ctx.beginPath();
+  ctx.arc(0, 0, 50, 0, Math.PI * 2, false);
+  ctx.closePath();
+  ctx.stroke();
+  ctx.strokeStyle = 'rgba(0,0,0,0.1)';
+  ctx.beginPath();
+  ctx.arc(0, 0, 100, 0, Math.PI * 2, false);
+  ctx.closePath();
+  ctx.stroke();
+  ctx.strokeStyle = 'rgba(0,0,0,0.06)';
+  ctx.beginPath();
+  ctx.arc(0, 0, 150, 0, Math.PI * 2, false);
+  ctx.closePath();
+  ctx.stroke();
+}
+
 var target = {
   latitude : 0,
   longitude: 0
