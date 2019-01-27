@@ -1,0 +1,8 @@
+ html, body {overflow:hidden;} 
+ #myCanvas{
+ 	height: 667px;
+ 	width: 375px;
+ }
+ body.noScroll { /* ...or body.dialogShowing */
+  overflow: hidden;
+}
