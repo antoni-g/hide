@@ -73,11 +73,12 @@ mainContext.fillStyle = "#EEEEEE";
   }  
   drawHand(mainContext, second/180*Math.PI, radius, 5);
 
-
+  drawLine(mainContext);
   requestAnimationFrame(drawCircle);
 }
 function drawHand(ctx, pos, length, width) {
     ctx.beginPath();
+    ctx.strokeStyle = 'rgba(0,0,0,1)';
     ctx.shadowBlur = 20;
     ctx.shadowColor = "black";
     ctx.lineWidth = width;
@@ -155,6 +156,40 @@ function drawSeekerLocation(ctx,opacity){
   ctx.fill();
   ctx.shadowBlur = 0;
 }
+
+function drawLine(ctx) {
+  ctx.strokeStyle = 'rgba(0,0,0,0.2)';
+  ctx.beginPath();
+
+  //down
+  ctx.moveTo(0,0);
+  ctx.lineTo(0, 170);
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  //right
+  ctx.beginPath();
+  ctx.moveTo(0,0);
+  ctx.lineTo(170, 0);
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // up
+  ctx.beginPath();
+  ctx.moveTo(0,0);
+  ctx.lineTo(0, -170);
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // left
+  ctx.beginPath();
+  ctx.moveTo(0,0);
+  ctx.lineTo(-170, 0);
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+}
+
 var target = {
   latitude : 0,
   longitude: 0
