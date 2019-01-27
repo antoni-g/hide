@@ -4,13 +4,28 @@
    html, body {margin:0;
     border: none;
     padding: 0;} 
- #myCanvas{
-  height: 667px;
-  width: 375px;
- }
+    #explanation{
+      width: 200px;
+      padding-left: 30%;
+      padding-right: 40%;
+      font-family: 'Ubuntu';
+      font-size: 1em;
+    }
+    #distance{
+      font-size: 34px;
+      margin: 10px;
+      width: 200px;
+      height: 250px;
+      padding: 10px;
+      padding-left: 30%;
+      padding-right: 40%;
+      font-family: 'Ubuntu';
+      font-size: 3em;
+    }
   html, body {overflow:hidden;} 
 
   </style>
+    <link rel="stylesheet" href="resources.css">
   <script src="https://s3.amazonaws.com/stitch-sdks/js/bundles/4/stitch.js"></script>
   <head>
     <title>Simple Canvas Example</title>
@@ -21,8 +36,12 @@
       <script type="text/javascript" src="seeker.js"></script>
 
   <body>
-    <div id="distance"></div>    
-    
+    <div class='center-div'>
+      <div id="explanation">
+        Distance to closest hider:
+      </div>
+      <div id="distance"></div>    
+    </div>
   </body>
 
 </html>

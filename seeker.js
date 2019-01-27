@@ -8,7 +8,7 @@ const client = stitch.Stitch.initializeDefaultAppClient('hide-yntsk');
 window.setInterval(function(){
 var distance;
 db.collection('default').find({}, { limit: 100}).asArray().then(docs => {
-	$('#distance').html(getMin(docs));
+	$('#distance').html(getMin(docs).toFixed(2));
 })
 
 }, 500);

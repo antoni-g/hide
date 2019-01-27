@@ -1,7 +1,8 @@
 
 var seekerDistance = 30;
 var seekerAngle = 70;
-var seekerOpacity = 1;
+var seekerOpacity = 1.3;
+var drawing = false;
 
 const client = stitch.Stitch.initializeDefaultAppClient('hide-yntsk');
 
@@ -53,13 +54,31 @@ mainContext.fillStyle = "#EEEEEE";
   if (second > 360) {
     second = 0;
   }
-  drawSeekerLocation(mainContext,seekerOpacity);
-  seekerOpacity*=.98;
+
+  var handAngle = second
+  var tempSeekerAngle = Math.round(seekerAngle)+90
+  if (tempSeekerAngle > 360) {
+    tempSeekerAngle -= 360;
+  }
+  if (second === tempSeekerAngle) {
+    drawing = true;
+    seekerOpacity = 1.3;
+  }
+  if (drawing) {
+    drawSeekerLocation(mainContext,seekerOpacity);
+    seekerOpacity*=.99;
+  }
+  if (seekerOpacity < .02) {
+    drawing = false;
+  }  
   drawHand(mainContext, second/180*Math.PI, radius, 5);
+
+  drawLine(mainContext);
   requestAnimationFrame(drawCircle);
 }
 function drawHand(ctx, pos, length, width) {
     ctx.beginPath();
+    ctx.strokeStyle = 'rgba(0,0,0,1)';
     ctx.shadowBlur = 20;
     ctx.shadowColor = "black";
     ctx.lineWidth = width;
@@ -82,7 +101,7 @@ function updateSeekerLocation(){
         if(i["hider"] == false){
           seekerDistance = calcDistance(crd.longitude, crd.latitude, i["location"]["coordinates"][0], i["location"]["coordinates"][1])
           seekerAngle = angle(0, 0, i["location"]["coordinates"][0], i["location"]["coordinates"][1]);
-          seekerOpacity = 1;
+          seekerOpacity = 1.3;
         }})
 
     })
@@ -137,6 +156,55 @@ function drawSeekerLocation(ctx,opacity){
   ctx.fill();
   ctx.shadowBlur = 0;
 }
+
+function drawLine(ctx) {
+  ctx.strokeStyle = 'rgba(0,0,0,0.2)';
+  ctx.beginPath();
+
+  //down
+  ctx.moveTo(0,0);
+  ctx.lineTo(0, 170);
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  //right
+  ctx.beginPath();
+  ctx.moveTo(0,0);
+  ctx.lineTo(170, 0);
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // up
+  ctx.beginPath();
+  ctx.moveTo(0,0);
+  ctx.lineTo(0, -170);
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // left
+  ctx.beginPath();
+  ctx.moveTo(0,0);
+  ctx.lineTo(-170, 0);
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  ctx.strokeStyle = 'rgba(0,0,0,0.2)';
+  ctx.beginPath();
+  ctx.arc(0, 0, 50, 0, Math.PI * 2, false);
+  ctx.closePath();
+  ctx.stroke();
+  ctx.strokeStyle = 'rgba(0,0,0,0.1)';
+  ctx.beginPath();
+  ctx.arc(0, 0, 100, 0, Math.PI * 2, false);
+  ctx.closePath();
+  ctx.stroke();
+  ctx.strokeStyle = 'rgba(0,0,0,0.06)';
+  ctx.beginPath();
+  ctx.arc(0, 0, 150, 0, Math.PI * 2, false);
+  ctx.closePath();
+  ctx.stroke();
+}
+
 var target = {
   latitude : 0,
   longitude: 0
@@ -144,7 +212,7 @@ var target = {
 
 var options = {
   enableHighAccuracy: true,
-  timeout: 100000,
+  timeout: 1000,
   maximumAge: 0
 };
 var crd;
