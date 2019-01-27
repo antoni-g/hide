@@ -163,4 +163,18 @@ function error(err) {
   console.warn('ERROR(' + err.code + '): ' + err.message);
 }
 var id = navigator.geolocation.watchPosition(success, error, options);
-
+ 
+function fullscreen(){
+           var el = document.getElementById('myCanvas');
+ 
+           if(el.webkitRequestFullScreen) {
+               el.webkitRequestFullScreen();
+           }
+          else {
+             el.mozRequestFullScreen();
+          }            
+}
+ 
+$('#myCanvas').click(function(event) {
+  fullscreen();
+});
