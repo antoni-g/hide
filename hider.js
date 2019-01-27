@@ -125,6 +125,14 @@ var options = {
 
 function success(pos) {
   var crd = pos.coords;
+  db.collection('default').updateOne({owner_id: client.auth.user.id}, {
+    $set:{
+      location:{
+        type: "Point", coordinates: [
+          crd.longitude, crd.latitude]
+        }
+      }
+    }, {upsert:true})
   console.log(crd);
 }
 function error(err) {
