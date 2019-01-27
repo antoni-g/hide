@@ -1,8 +1,10 @@
 
 var seekerDistance = 30;
 var seekerAngle = 70;
-var seekerOpacity = 1.3;
+var seekerOpacity = 1;
 var drawing = false;
+var multiplier = .1;
+var hiders = [];
 
 const client = stitch.Stitch.initializeDefaultAppClient('hide-yntsk');
 
@@ -41,7 +43,7 @@ function drawCircle() {
   var radius = canvasWidth/2-30;
   mainContext.arc(0, 0, radius, 0, Math.PI * 2, false);
   mainContext.closePath();
-mainContext.fillStyle = "#EEEEEE";
+  mainContext.fillStyle = "#EEEEEE";
   mainContext.fill();
   mainContext.beginPath();
   mainContext.arc(0, 0, 10, 0, Math.PI * 2, false);
@@ -62,7 +64,7 @@ mainContext.fillStyle = "#EEEEEE";
   }
   if (second === tempSeekerAngle) {
     drawing = true;
-    seekerOpacity = 1.3;
+    seekerOpacity = 1;
   }
   if (drawing) {
     drawSeekerLocation(mainContext,seekerOpacity);
@@ -70,10 +72,34 @@ mainContext.fillStyle = "#EEEEEE";
   }
   if (seekerOpacity < .02) {
     drawing = false;
+<<<<<<< HEAD
   }
+=======
+  }  
+  hiders.forEach(function(el) {
+    if (Math.round(el.angle)+90 === second || el.drawing) {
+      if (!el.drawing) {
+        el.opacity = 1;
+        el.drawing = true;
+      }
+      if (el.opacity > .02 && el.dist > 0) {
+        console.log(el)
+        drawHiderLocation(mainContext,el.opacity,el.dist,el.angle);
+        el.opacity *= .98;
+        console.log('drawing hider')
+      }
+      else {
+        el.drawing = false;
+      }
+    }
+  });
+>>>>>>> 7de4e8a8f01621cfbdecfa0c0da00a283bdd51ab
   drawHand(mainContext, second/180*Math.PI, radius, 5);
 
   drawLine(mainContext);
+
+  
+
   requestAnimationFrame(drawCircle);
 }
 function drawHand(ctx, pos, length, width) {
@@ -96,16 +122,30 @@ drawCircle();
 });
 function updateSeekerLocation(){
   var distance;
+  hiders = [];
+  console.log(seekerDistance)
+  console.log(seekerAngle)
   db.collection('default').find({}, { limit: 10}).asArray().then(docs => {
+      if (!crd) {
+        console.log('local location error')
+        return;
+      }
       docs.forEach(function(i){
-        if(i["hider"] == false){
-          seekerDistance = calcDistance(crd.longitude, crd.latitude, i["location"]["coordinates"][0], i["location"]["coordinates"][1])
-          seekerAngle = angle(0, 0, i["location"]["coordinates"][0], i["location"]["coordinates"][1]);
-          seekerOpacity = 1.3;
-        }})
-
+        if (i) {
+          console.log(i)
+          if(i["hider"] === false){
+            seekerDistance = multiplier*calcDistance(crd.longitude, crd.latitude, i["location"]["coordinates"][0], i["location"]["coordinates"][1])
+            seekerAngle = angle(0, 0, i["location"]["coordinates"][0], i["location"]["coordinates"][1]);
+          }
+          else {
+            var hiderDistance = multiplier*calcDistance(crd.longitude, crd.latitude, i["location"]["coordinates"][0], i["location"]["coordinates"][1])
+            var hiderAngle = angle(0, 0, i["location"]["coordinates"][0], i["location"]["coordinates"][1]);
+            var car = {dist: hiderDistance, angle: hiderAngle, opacity: 0, drawing: false};
+            hiders.push(car)
+          }
+        }
     })
-
+  })
 }
 
 function angle(cx, cy, ex, ey) {
@@ -156,6 +196,17 @@ function drawSeekerLocation(ctx,opacity){
   ctx.fill();
   ctx.shadowBlur = 0;
 }
+function drawHiderLocation(ctx,opacity,dist,angle){
+  ctx.shadowBlur = 20;
+  ctx.shadowColor = "gray";
+  ctx.beginPath();
+  ctx.arc(dist*Math.cos(angle/180*Math.PI), dist*Math.sin(angle/180*Math.PI), 7, 0, Math.PI * 2, false);
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(162, 201, 239, '+opacity+')';
+  ctx.fill();
+  ctx.shadowBlur = 0;
+}
+
 
 function drawLine(ctx) {
   ctx.strokeStyle = 'rgba(0,0,0,0.2)';

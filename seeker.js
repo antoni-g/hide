@@ -39,7 +39,7 @@ var options = {
 var crd;
 function success(pos) {
   crd = pos.coords;
-  db.collection('default').update({owner_id: client.auth.user.id}, {
+  db.collection('default').updateMany({owner_id: client.auth.user.id}, {
     $set:{
       location:{
         type: "Point", coordinates: [
