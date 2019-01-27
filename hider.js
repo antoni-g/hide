@@ -188,6 +188,21 @@ function drawLine(ctx) {
   ctx.lineWidth = 2;
   ctx.stroke();
 
+  ctx.strokeStyle = 'rgba(0,0,0,0.2)';
+  ctx.beginPath();
+  ctx.arc(0, 0, 50, 0, Math.PI * 2, false);
+  ctx.closePath();
+  ctx.stroke();
+  ctx.strokeStyle = 'rgba(0,0,0,0.1)';
+  ctx.beginPath();
+  ctx.arc(0, 0, 100, 0, Math.PI * 2, false);
+  ctx.closePath();
+  ctx.stroke();
+  ctx.strokeStyle = 'rgba(0,0,0,0.06)';
+  ctx.beginPath();
+  ctx.arc(0, 0, 150, 0, Math.PI * 2, false);
+  ctx.closePath();
+  ctx.stroke();
 }
 
 var target = {
