@@ -1,6 +1,7 @@
 
 var seekerDistance = 30;
 var seekerAngle = 70;
+var seekerOpacity = 1;
 
 const client = stitch.Stitch.initializeDefaultAppClient('hide-yntsk');
 
@@ -52,7 +53,8 @@ mainContext.fillStyle = "#EEEEEE";
   if (second > 360) {
     second = 0;
   }
-  drawSeekerLocation(mainContext,1);
+  drawSeekerLocation(mainContext,seekerOpacity);
+  seekerOpacity*=.98;
   drawHand(mainContext, second/180*Math.PI, radius, 5);
   requestAnimationFrame(drawCircle);
 }
@@ -80,6 +82,7 @@ function updateSeekerLocation(){
         if(i["hider"] == false){
           seekerDistance = calcDistance(crd.longitude, crd.latitude, i["location"]["coordinates"][0], i["location"]["coordinates"][1])
           seekerAngle = angle(0, 0, i["location"]["coordinates"][0], i["location"]["coordinates"][1]);
+          seekerOpacity = 1;
         }})
 
     })
@@ -164,17 +167,3 @@ function error(err) {
 }
 var id = navigator.geolocation.watchPosition(success, error, options);
  
-function fullscreen(){
-           var el = document.getElementById('myCanvas');
- 
-           if(el.webkitRequestFullScreen) {
-               el.webkitRequestFullScreen();
-           }
-          else {
-             el.mozRequestFullScreen();
-          }            
-}
- 
-$('#myCanvas').click(function(event) {
-  fullscreen();
-});
