@@ -59,6 +59,7 @@ var id = navigator.geolocation.watchPosition(success, error, options);
 
 function getMin(arr) {
     var min;
+    min = 100;
     for (var i=0 ; i<arr.length ; i++) {
     	if(arr[i]["hider"] == false){
     		continue;
