@@ -19,9 +19,6 @@ const client = stitch.Stitch.initializeDefaultAppClient('hide-yntsk');
 window.setInterval(function(){
 var distance;
 db.collection('default').find({}, { limit: 100}).asArray().then(docs => {
-	
-			console.log(docs)
-			console.log("calculating distance")
 			$('#distance').html(getMin(docs));
 
 })
@@ -64,7 +61,6 @@ function success(pos) {
         hider: false
       }
     }, {upsert:true})
-  console.log(crd);
 }
 function error(err) {
   console.warn('ERROR(' + err.code + '): ' + err.message);
