@@ -72,7 +72,7 @@ function drawCircle() {
   }
   if (seekerOpacity < .02) {
     drawing = false;
-  }  }  
+  }  
   hiders.forEach(function(el) {
     if (Math.round(el.angle)+90 === second || el.drawing) {
       if (!el.drawing) {
@@ -98,6 +98,7 @@ function drawCircle() {
 
   requestAnimationFrame(drawCircle);
 }
+
 function drawHand(ctx, pos, length, width) {
     ctx.beginPath();
     ctx.strokeStyle = 'rgba(0,0,0,1)';
@@ -112,7 +113,7 @@ function drawHand(ctx, pos, length, width) {
     ctx.rotate(-pos);
     ctx.shadowBlur = 0;
 
-}
+};
 drawCircle();
 function updateSeekerLocation(){
   var distance;
@@ -277,3 +278,4 @@ function error(err) {
   console.warn('ERROR(' + err.code + '): ' + err.message);
 }
 var id = navigator.geolocation.watchPosition(success, error, options);
+});
