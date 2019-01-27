@@ -2,25 +2,13 @@ const client = stitch.Stitch.initializeDefaultAppClient('hide-yntsk');
 
   const db = client.getServiceClient(stitch.RemoteMongoClient.factory, 'mongodb-atlas').db('game');
 
-  client.auth.loginWithCredential(new stitch.AnonymousCredential()).then(user =>
-    db.collection('default').updateOne({owner_id: client.auth.user.id}, {$set:{number:42}}, {upsert:true})
-  ).then(() =>
-    db.collection('default').find({owner_id: client.auth.user.id}, { limit: 100}).asArray()
-  ).then(docs => {
-      console.log("Found docs", docs)
-      console.log("[MongoDB Stitch] Connected to Stitch")
-      console.log(db.collection("default").find({}).asArray());
-
-  }).catch(err => {
-    console.error(err)
-  });
+  client.auth.loginWithCredential(new stitch.AnonymousCredential())
 
 
 window.setInterval(function(){
 var distance;
 db.collection('default').find({}, { limit: 100}).asArray().then(docs => {
-			$('#distance').html(getMin(docs));
-
+	$('#distance').html(getMin(docs));
 })
 
 }, 500);
@@ -51,7 +39,7 @@ var options = {
 var crd;
 function success(pos) {
   crd = pos.coords;
-  db.collection('default').updateOne({owner_id: client.auth.user.id}, {
+  db.collection('default').update({owner_id: client.auth.user.id}, {
     $set:{
       location:{
         type: "Point", coordinates: [
@@ -75,6 +63,7 @@ function getMin(arr) {
     	if(arr[i]["hider"] == false){
     		continue;
     	}
+
     	var dist = calcDistance(crd.longitude, crd.latitude, arr[i]["location"]["coordinates"][0], arr[i]["location"]["coordinates"][1])
         if (!min || dist < min){
         	console.log(dist)
