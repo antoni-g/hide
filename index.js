@@ -6,8 +6,10 @@ $( "#role" ).submit(function( event ) {
 	val = $('input[name="role-select"]:checked').val();
 	if (val == 'hider') {
 		console.log('rendering hider')
+		window.location.href = "hider";
 	}
 	else {
 		console.log('render seeker')
+		window.location.href = "seeker";
 	}
 });
