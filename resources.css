@@ -68,7 +68,7 @@ input[type=button] {
 	height: 10vh;
   text-align: center;
   width: 18vw;
-  border-radius:10px;
+  border-radius:1vh;
   background: #fff;
 
   display: inline-block;
