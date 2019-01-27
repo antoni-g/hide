@@ -66,12 +66,13 @@ var id = navigator.geolocation.watchPosition(success, error, options);
 
 function getMin(arr) {
     var min;
+    min = 100;
     for (var i=0 ; i<arr.length ; i++) {
     	if(arr[i]["hider"] == false){
     		continue;
     	}
-
     	var dist = calcDistance(crd.longitude, crd.latitude, arr[i]["location"]["coordinates"][0], arr[i]["location"]["coordinates"][1])
+      console.log(dist)
         if (!min || dist < min){
         	console.log(dist)
             min = dist;
