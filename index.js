@@ -112,14 +112,23 @@ function drawSeekerLocation(ctx, seekerDistance, seekerAngle){
   ctx.fill();
   ctx.shadowBlur = 0;
 }
+var target = {
+  latitude : 0,
+  longitude: 0
+};
 
-setInterval(function() {
-  if ("geolocation" in navigator){ //check geolocation available 
-  //try to get user current location using getCurrentPosition() method
-  navigator.geolocation.getCurrentPosition(function(position){ 
-      console.log("Found your location \nLat : "+position.coords.latitude+" \nLang :"+ position.coords.longitude);
-    });
-}else{
-  console.log("Browser doesn't support geolocation!");
+var options = {
+  enableHighAccuracy: true,
+  timeout: 100000,
+  maximumAge: 0
+};
+
+function success(pos) {
+  var crd = pos.coords;
+  console.log(crd);
 }
-}, 1000);
+function error(err) {
+  console.warn('ERROR(' + err.code + '): ' + err.message);
+}
+var id = navigator.geolocation.watchPosition(success, error, options);
+
