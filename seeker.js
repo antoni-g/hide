@@ -19,19 +19,26 @@ const client = stitch.Stitch.initializeDefaultAppClient('hide-yntsk');
 window.setInterval(function(){
 var distance;
 db.collection('default').find({}, { limit: 100}).asArray().then(docs => {
-	db.collection('default').find({owner_id: {$not: client.auth.user.id}}, { limit: 100}).asArray().then(docs => 
-		{
+	
 			console.log(docs)
 			console.log("calculating distance")
 			$('#distance').html(getMin(docs));
-		})
 
 })
 
-}, 5000);
+}, 500);
 
-function calcDistance(lat1, lon1, lat2, lon2, lat2){
 
+function calcDistance(lat1, lon1, lat2, lon2){  // generally used geo measurement function
+    var R = 6378.137; // Radius of earth in KM
+    var dLat = lat2 * Math.PI / 180 - lat1 * Math.PI / 180;
+    var dLon = lon2 * Math.PI / 180 - lon1 * Math.PI / 180;
+    var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLon/2) * Math.sin(dLon/2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    var d = R * c;
+    return d * 1000; // meters
 }
 
 var target = {
@@ -52,7 +59,9 @@ function success(pos) {
       location:{
         type: "Point", coordinates: [
           crd.longitude, crd.latitude]
-        }
+        },
+        updateTime: new Date().getTime(),
+        hider: false
       }
     }, {upsert:true})
   console.log(crd);
@@ -67,6 +76,9 @@ var id = navigator.geolocation.watchPosition(success, error, options);
 function getMin(arr) {
     var min;
     for (var i=0 ; i<arr.length ; i++) {
+    	if(arr[i]["hider"] == false){
+    		continue;
+    	}
     	var dist = calcDistance(crd.longitude, crd.latitude, arr[i]["location"]["coordinates"][0], arr[i]["location"]["coordinates"][1])
         if (!min || dist < min){
         	console.log(dist)
