@@ -72,6 +72,9 @@ function drawCircle() {
   }
   if (seekerOpacity < .02) {
     drawing = false;
+<<<<<<< HEAD
+  }
+=======
   }  
   hiders.forEach(function(el) {
     if (Math.round(el.angle)+90 === second || el.drawing) {
@@ -90,6 +93,7 @@ function drawCircle() {
       }
     }
   });
+>>>>>>> 7de4e8a8f01621cfbdecfa0c0da00a283bdd51ab
   drawHand(mainContext, second/180*Math.PI, radius, 5);
 
   drawLine(mainContext);
@@ -111,7 +115,7 @@ function drawHand(ctx, pos, length, width) {
     ctx.stroke();
     ctx.rotate(-pos);
     ctx.shadowBlur = 0;
-    
+
 }
 drawCircle();
 
@@ -279,4 +283,3 @@ function error(err) {
   console.warn('ERROR(' + err.code + '): ' + err.message);
 }
 var id = navigator.geolocation.watchPosition(success, error, options);
- 
