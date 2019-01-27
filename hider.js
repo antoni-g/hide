@@ -128,6 +128,7 @@ function updateSeekerLocation(){
       }
       docs.forEach(function(i){
         if (i) {
+          console.log(i)
           if(i["hider"] === false){
             seekerDistance = multiplier*calcDistance(crd.longitude, crd.latitude, i["location"]["coordinates"][0], i["location"]["coordinates"][1])
             seekerAngle = angle(0, 0, i["location"]["coordinates"][0], i["location"]["coordinates"][1]);
