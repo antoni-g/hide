@@ -63,6 +63,7 @@ input[type=button] {
 }
 
 .hvr-fade {
+  -webkit-appearance: none;
 	font-family: 'Ubuntu';
 	font-size: 1.5em;
 	height: 10vh;
