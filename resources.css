@@ -20,6 +20,8 @@ input[type=button] {
 }
 
 .inside {
+	display: inline;
+	text-align: center
 	top: 100px;
     left: 130px;
     width: 300px;
