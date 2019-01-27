@@ -60,14 +60,11 @@ mainContext.fillStyle = "#EEEEEE";
   if (tempSeekerAngle > 360) {
     tempSeekerAngle -= 360;
   }
-  console.log(handAngle)
-  console.log(tempSeekerAngle)
   if (second === tempSeekerAngle) {
     drawing = true;
     seekerOpacity = 1;
   }
   if (drawing) {
-    console.log('drawing hand')
     drawSeekerLocation(mainContext,seekerOpacity);
     seekerOpacity*=.99;
   }
