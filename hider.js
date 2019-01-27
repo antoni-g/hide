@@ -13,8 +13,8 @@ const client = stitch.Stitch.initializeDefaultAppClient('hide-yntsk');
 $( document ).ready(function() {
    var mainCanvas = document.querySelector("#myCanvas");
 var mainContext = mainCanvas.getContext("2d");
-var canvasWidth = mainCanvas.width;
-var canvasHeight = mainCanvas.height;
+var canvasWidth = window.innerWidth;
+var canvasHeight = window.innerHeight;
 mainCanvas.width = backingScale(mainContext)*canvasWidth;
 mainCanvas.height = backingScale(mainContext)*canvasHeight;
 var requestAnimationFrame = window.requestAnimationFrame ||
