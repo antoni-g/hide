@@ -84,11 +84,12 @@ drawCircle();
 function updateSeekerLocation(){
   console.log("updating seeker location")
   var distance;
-  db.collection('default').find({hider: false}, { limit: 10}).asArray().then(docs => {
-      console.log(docs)
-      docs.forEach(function(i){if(docs[i]["hider"] == false){
-          seekerDistance = calcDistance(crd.longitude, crd.latitude, docs[i]["location"]["coordinates"][0], docs[i]["location"]["coordinates"][1])
-          seekerAngle = Math.acos(docs[i]["location"]["coordinates"][0]/seekerDistance);
+  db.collection('default').find({}, { limit: 10}).asArray().then(docs => {
+    console.log(docs)
+      docs.forEach(function(i){
+        if(i["hider"] == false){
+          seekerDistance = calcDistance(crd.longitude, crd.latitude, i["location"]["coordinates"][0], i["location"]["coordinates"][1])
+          seekerAngle = Math.acos(i["location"]["coordinates"][0]/seekerDistance);
           console.log(seekerDistance, seekerAngle);
         }})
 
