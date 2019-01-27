@@ -64,8 +64,8 @@ function getMin(arr) {
     	if(arr[i]["hider"] == false){
     		continue;
     	}
-
     	var dist = calcDistance(crd.longitude, crd.latitude, arr[i]["location"]["coordinates"][0], arr[i]["location"]["coordinates"][1])
+      console.log(dist)
         if (!min || dist < min){
         	console.log(dist)
             min = dist;
