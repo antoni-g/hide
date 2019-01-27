@@ -1,7 +1,7 @@
 
 var seekerDistance = 30;
 var seekerAngle = 70;
-var seekerOpacity = 1;
+var seekerOpacity = 1.3;
 var drawing = false;
 
 const client = stitch.Stitch.initializeDefaultAppClient('hide-yntsk');
@@ -62,7 +62,7 @@ mainContext.fillStyle = "#EEEEEE";
   }
   if (second === tempSeekerAngle) {
     drawing = true;
-    seekerOpacity = 1;
+    seekerOpacity = 1.3;
   }
   if (drawing) {
     drawSeekerLocation(mainContext,seekerOpacity);
@@ -100,7 +100,7 @@ function updateSeekerLocation(){
         if(i["hider"] == false){
           seekerDistance = calcDistance(crd.longitude, crd.latitude, i["location"]["coordinates"][0], i["location"]["coordinates"][1])
           seekerAngle = angle(0, 0, i["location"]["coordinates"][0], i["location"]["coordinates"][1]);
-          seekerOpacity = 1;
+          seekerOpacity = 1.3;
         }})
 
     })
