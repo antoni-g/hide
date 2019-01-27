@@ -30,7 +30,7 @@ function drawCircle() {
   mainContext.clearRect(-canvasWidth/2, -canvasHeight/2, canvasWidth, canvasHeight);
 
   // color in the background
-  mainContext.fillStyle = "#EEEEEE";
+  mainContext.fillStyle = "#FFFFFF";
   mainContext.fillRect(-canvasWidth/2, -canvasHeight/2, canvasWidth, canvasHeight);
 
   // draw the circle
@@ -39,7 +39,7 @@ function drawCircle() {
   var radius = canvasWidth/2-30;
   mainContext.arc(0, 0, radius, 0, Math.PI * 2, false);
   mainContext.closePath();
-mainContext.fillStyle = "#FFFFFF";
+mainContext.fillStyle = "#EEEEEE";
   mainContext.fill();
   mainContext.beginPath();
   mainContext.arc(0, 0, 10, 0, Math.PI * 2, false);
