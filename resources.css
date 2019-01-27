@@ -8,7 +8,7 @@ input[type=button] {
      font-size: 1em;
  }
 
-#distance{
+.distance{
   margin: 12px;
   width: 30vw;
   height: 20vh;
@@ -34,10 +34,12 @@ input[type=button] {
   height: 80vh;
   background-color: #ccc;
   border-radius: 3px;
+  justify-content: center;
+  align-items: center;
 }
 
 .inside {
-	display: inline;
+	display: inline-block;
 	text-align: center;
 	top: 100px;
     min-height: 500px;
@@ -82,7 +84,7 @@ input[type=button] {
 	font-size: 1.5em;
 	height: 10vh;
   text-align: center;
-  width: 18vw;
+  width: 24vw;
   border-radius:1vh;
   background: #fff;
 
