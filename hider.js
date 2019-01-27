@@ -144,7 +144,7 @@ var target = {
 
 var options = {
   enableHighAccuracy: true,
-  timeout: 100000,
+  timeout: 1000,
   maximumAge: 0
 };
 var crd;
