@@ -79,14 +79,14 @@ function drawCircle() {
         el.opacity = 1;
         el.drawing = true;
       }
-      if (el.opacity > .02 && el.dist > .5) {
-        console.log(el)
+      if (el.opacity > .01 && el.dist > .5) {
         drawHiderLocation(mainContext,el.opacity,el.dist,el.angle);
         el.opacity *= .98;
-        console.log('drawing hider')
       }
       else {
         el.drawing = false;
+        var ind = hiders.indexOf(el);
+        hiders.splice(ind, 1);
       }
     }
   });
@@ -118,9 +118,6 @@ drawCircle();
 });
 function updateSeekerLocation(){
   var distance;
-  hiders = [];
-  console.log(seekerDistance)
-  console.log(seekerAngle)
   db.collection('default').find({}, { limit: 10}).asArray().then(docs => {
       if (!crd) {
         console.log('local location error')
@@ -128,7 +125,6 @@ function updateSeekerLocation(){
       }
       docs.forEach(function(i){
         if (i) {
-          console.log(i)
           if(i["hider"] === false){
             seekerDistance = multiplier*calcDistance(crd.longitude, crd.latitude, i["location"]["coordinates"][0], i["location"]["coordinates"][1])
             seekerAngle = angle(crd.longitude, crd.latitude, i["location"]["coordinates"][0], i["location"]["coordinates"][1]);
@@ -184,9 +180,9 @@ function backingScale(context) {
 }
 function drawSeekerLocation(ctx,opacity){
   ctx.shadowBlur = 20;
-  ctx.shadowColor = "gray";
+  ctx.shadowColor = "black";
   ctx.beginPath();
-  ctx.arc(seekerDistance*Math.cos(seekerAngle/180*Math.PI), seekerDistance*Math.sin(seekerAngle/180*Math.PI), 7, 0, Math.PI * 2, false);
+  ctx.arc(seekerDistance*Math.cos(seekerAngle/180*Math.PI), seekerDistance*Math.sin(seekerAngle/180*Math.PI), 8, 0, Math.PI * 2, false);
   ctx.closePath();
   ctx.fillStyle = 'rgba(115, 115, 115, '+opacity+')';
   ctx.fill();
@@ -196,7 +192,7 @@ function drawHiderLocation(ctx,opacity,dist,angle){
   ctx.shadowBlur = 20;
   ctx.shadowColor = "gray";
   ctx.beginPath();
-  ctx.arc(dist*Math.cos(angle/180*Math.PI), dist*Math.sin(angle/180*Math.PI), 7, 0, Math.PI * 2, false);
+  ctx.arc(dist*Math.cos(angle/180*Math.PI), dist*Math.sin(angle/180*Math.PI), 5, 0, Math.PI * 2, false);
   ctx.closePath();
   ctx.fillStyle = 'rgba(162, 201, 239, '+opacity+')';
   ctx.fill();
