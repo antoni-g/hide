@@ -136,12 +136,6 @@ function backingScale(context) {
     return 1;
 }
 function drawSeekerLocation(ctx){
-<<<<<<< HEAD
-
-=======
-  console.log("drawing new seeker at")
-  console.log(seekerDistance, seekerAngle)
->>>>>>> 7de3a46cbc7d44bb160ceb71c92f82761e7ae9af
   ctx.shadowBlur = 20;
   ctx.shadowColor = "gray";
   ctx.beginPath();
